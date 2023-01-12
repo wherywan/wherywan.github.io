@@ -1,0 +1,31 @@
+import{_ as e}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as i,c as a,f as r}from"./app.6f24b29a.js";const n={},s=r(`<h1 id="nacos" tabindex="-1"><a class="header-anchor" href="#nacos" aria-hidden="true">#</a> nacos</h1><ul><li>\u670D\u52A1\u6CE8\u518C \u6839\u636EServletWebServerInitializedEvent\u5F00\u542F\u670D\u52A1\u6CE8\u518C</li><li>\u670D\u52A1\u53D1\u73B0</li><li>\u5FC3\u8DF3\u673A\u5236</li></ul><h2 id="configuration" tabindex="-1"><a class="header-anchor" href="#configuration" aria-hidden="true">#</a> configuration</h2><h3 id="nacosserviceautoconfiguration" tabindex="-1"><a class="header-anchor" href="#nacosserviceautoconfiguration" aria-hidden="true">#</a> NacosServiceAutoConfiguration</h3><p>\u914D\u7F6Enacos\u670D\u52A1\u7BA1\u7406\u5668 NacosServiceManager</p><h3 id="nacosdiscoveryautoconfiguration" tabindex="-1"><a class="header-anchor" href="#nacosdiscoveryautoconfiguration" aria-hidden="true">#</a> NacosDiscoveryAutoConfiguration</h3><ul><li>NacosDiscoveryProperties\u5C5E\u6027</li><li>NacosServiceDiscovery \u8D1F\u8D23\u670D\u52A1\u53D1\u73B0 \u5305\u542BNacosDiscoveryProperties\u3001NacosServiceManager</li></ul><h3 id="nacosdiscoveryclientconfiguration" tabindex="-1"><a class="header-anchor" href="#nacosdiscoveryclientconfiguration" aria-hidden="true">#</a> NacosDiscoveryClientConfiguration</h3><ul><li>DiscoveryClient \u5305\u542BNacosServiceDiscovery</li><li>NacosWatch</li></ul><h3 id="nacosserviceregistryautoconfiguration" tabindex="-1"><a class="header-anchor" href="#nacosserviceregistryautoconfiguration" aria-hidden="true">#</a> NacosServiceRegistryAutoConfiguration</h3><ul><li>NacosServiceRegistry</li><li>NacosRegistration</li><li>NacosAutoServiceRegistration</li></ul><h2 id="nacosservicemanager" tabindex="-1"><a class="header-anchor" href="#nacosservicemanager" aria-hidden="true">#</a> NacosServiceManager</h2><h3 id="namingservice" tabindex="-1"><a class="header-anchor" href="#namingservice" aria-hidden="true">#</a> NamingService</h3><p>\u83B7\u53D6\u547D\u540D\u670D\u52A1</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code>public NamingService getNamingService(Properties properties) {
+		if (Objects.isNull(this.namingService)) {
+			buildNamingService(properties);
+		}
+		return namingService;
+	}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="nacosfactory" tabindex="-1"><a class="header-anchor" href="#nacosfactory" aria-hidden="true">#</a> NacosFactory</h3><ul><li>createConfigService ConfigFactory</li><li>createNamingService NamingFactory</li><li>createMaintainService NamingMaintainFactory</li></ul><h4 id="namingfactory\u7684createconfigservice" tabindex="-1"><a class="header-anchor" href="#namingfactory\u7684createconfigservice" aria-hidden="true">#</a> NamingFactory\u7684createConfigService</h4><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code>public static NamingService createNamingService(String serverList) throws NacosException {
+        try {
+            Class&lt;?&gt; driverImplClass = Class.forName(&quot;com.alibaba.nacos.client.naming.NacosNamingService&quot;);
+            Constructor constructor = driverImplClass.getConstructor(String.class);
+            NamingService vendorImpl = (NamingService) constructor.newInstance(serverList);
+            return vendorImpl;
+        } catch (Throwable e) {
+            throw new NacosException(NacosException.CLIENT_INVALID_PARAM, e);
+        }
+    }
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="nacosnamingservice" tabindex="-1"><a class="header-anchor" href="#nacosnamingservice" aria-hidden="true">#</a> NacosNamingService</h3><p>\u5B9E\u4F8B\u5316\u65F6\u4F1A\u8FDB\u884Cinit\u521D\u59CB\u5316\uFF0C\u670D\u52A1\u4EE3\u7406\uFF0C\u5FC3\u8DF3\u6CE8\u518C\u5668 serverProxy\u3001beatReactor\u3001hostReactor</p><ul><li>\u6CE8\u518C\u5B9E\u4F8B</li><li>\u53D6\u6D88\u6CE8\u518C\u5B9E\u4F8B</li><li>\u83B7\u53D6\u6240\u6709\u5B9E\u4F8B</li><li>\u67E5\u8BE2\u5B9E\u4F8B</li><li>\u8BA2\u9605\u3001\u53D6\u6D88\u8BA2\u9605</li></ul><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code> private void init(Properties properties) throws NacosException {
+        ValidatorUtils.checkInitParam(properties);
+        this.namespace = InitUtils.initNamespaceForNaming(properties);
+        InitUtils.initSerialization();
+        initServerAddr(properties);
+        InitUtils.initWebRootContext(properties);
+        initCacheDir();
+        initLogName(properties);
+        
+        this.serverProxy = new NamingProxy(this.namespace, this.endpoint, this.serverList, properties);
+        this.beatReactor = new BeatReactor(this.serverProxy, initClientBeatThreadCount(properties));
+        this.hostReactor = new HostReactor(this.serverProxy, beatReactor, this.cacheDir, isLoadCacheAtStart(properties),
+                isPushEmptyProtect(properties), initPollingThreadCount(properties));
+    }
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="nacosautoserviceregistration" tabindex="-1"><a class="header-anchor" href="#nacosautoserviceregistration" aria-hidden="true">#</a> NacosAutoServiceRegistration</h2>`,24),t=[s];function c(o,l){return i(),a("div",null,t)}const u=e(n,[["render",c],["__file","nacos.html.vue"]]);export{u as default};

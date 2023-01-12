@@ -1,0 +1,1 @@
+import{_ as s}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as t,c as a,b as e,d as o}from"./app.6f24b29a.js";const r={},c=e("h1",{id:"less",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#less","aria-hidden":"true"},"#"),o(" less")],-1),n=[c];function _(l,d){return t(),a("div",null,n)}const f=s(r,[["render",_],["__file","less.html.vue"]]);export{f as default};
