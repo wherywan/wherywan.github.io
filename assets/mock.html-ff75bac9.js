@@ -1,0 +1,1 @@
+import{_ as o}from"./plugin-vue_export-helper-c27b6911.js";import{o as c,c as t,a as e,b as a}from"./app-f83986bb.js";const r={},s=e("h1",{id:"mock语法",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#mock语法","aria-hidden":"true"},"#"),a(" mock语法")],-1),n=[s];function _(d,m){return c(),t("div",null,n)}const l=o(r,[["render",_],["__file","mock.html.vue"]]);export{l as default};

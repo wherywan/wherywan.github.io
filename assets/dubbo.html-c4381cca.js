@@ -1,0 +1,24 @@
+import{_ as s}from"./plugin-vue_export-helper-c27b6911.js";import{o as n,c as a,f as l}from"./app-f83986bb.js";const e={},i=l(`<h1 id="dubbo" tabindex="-1"><a class="header-anchor" href="#dubbo" aria-hidden="true">#</a> Dubbo</h1><h2 id="概念" tabindex="-1"><a class="header-anchor" href="#概念" aria-hidden="true">#</a> 概念</h2><ul><li>Dubbo是阿里巴巴公司开源的一个高性能、轻量级的 Java RPC 框架。</li><li>致力于提供高性能和透明化的 RPC 远程服务调用方案，以及 SOA 服务治理方案</li></ul><h2 id="高级特性" tabindex="-1"><a class="header-anchor" href="#高级特性" aria-hidden="true">#</a> 高级特性</h2><ul><li><p>dubbo底层封装了序列化与反序列化，只需实现serializable接口，服务方和消费方共同依赖，就可以实现对象传输响应。</p></li><li><p>地址缓存</p></li><li><p>超时与重试</p><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">服务消费者在调用服务提供者的时候发生了阻塞、等待的情形，这个时候，服务消费者会一直等待下去。</span></span>
+<span class="line"><span style="color:#000000;">在某个峰值时刻，大量的请求都在同时请求服务消费者，会造成线程的大量堆积，势必会造成雪崩。</span></span>
+<span class="line"><span style="color:#000000;">dubbo 利用超时机制来解决这个问题，设置一个超时时间，在这个时间段内，无法完成服务访问，则自动断开连接。</span></span>
+<span class="line"><span style="color:#000000;">使用timeout属性配置超时时间，默认值1000，单位毫秒。即连接超时时间和读取超时时间</span></span>
+<span class="line"><span style="color:#000000;"></span></span>
+<span class="line"><span style="color:#000000;">设置了超时时间，在这个时间段内，无法完成服务访问，则自动断开连接。</span></span>
+<span class="line"><span style="color:#000000;">如果出现网络抖动，则这一次请求就会失败。</span></span>
+<span class="line"><span style="color:#000000;">Dubbo 提供重试机制来避免类似问题的发生。</span></span>
+<span class="line"><span style="color:#000000;">通过 retries  属性来设置重试次数。默认为 2 次</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p>多版本</p><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">灰度发布：当出现新功能时，会让一部分用户先使用新功能，用户反馈没问题时，再将所有用户迁移到新功能。</span></span>
+<span class="line"><span style="color:#000000;">dubbo 中使用version 属性来设置和调用同一个接口的不同版本</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p>负载均衡</p><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">负载均衡策略（4种）：</span></span>
+<span class="line"><span style="color:#000000;">Random ：按权重随机，默认值。按权重设置随机概率。</span></span>
+<span class="line"><span style="color:#000000;">RoundRobin ：按权重轮询。</span></span>
+<span class="line"><span style="color:#000000;">LeastActive：最少活跃调用数，相同活跃数的随机。</span></span>
+<span class="line"><span style="color:#000000;">ConsistentHash：一致性 Hash，相同参数的请求总是发到同一提供者。</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p>集群容错</p><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">集群容错模式：</span></span>
+<span class="line"><span style="color:#000000;">Failover Cluster：失败重试。默认值。当出现失败，重试其它服务器 ，默认重试2次，使用 retries 配置。一般用于读操作</span></span>
+<span class="line"><span style="color:#000000;">Failfast Cluster ：快速失败，只发起一次调用，失败立即报错。通常用于写操作。</span></span>
+<span class="line"><span style="color:#000000;">Failsafe Cluster ：失败安全，出现异常时，直接忽略。返回一个空结果。</span></span>
+<span class="line"><span style="color:#000000;">Failback Cluster ：失败自动恢复，后台记录失败请求，定时重发。通常用于消息通知操作。</span></span>
+<span class="line"><span style="color:#000000;">Forking Cluster ：并行调用多个服务器，只要一个成功即返回。</span></span>
+<span class="line"><span style="color:#000000;">Broadcast  Cluster ：广播调用所有提供者，逐个调用，任意一台报错则报错。</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p>服务降级</p></li></ul>`,5),p=[i];function c(d,r){return n(),a("div",null,p)}const u=s(e,[["render",c],["__file","dubbo.html.vue"]]);export{u as default};

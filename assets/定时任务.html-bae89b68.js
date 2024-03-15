@@ -1,0 +1,31 @@
+import{_ as s}from"./plugin-vue_export-helper-c27b6911.js";import{o as n,c as e,f as a}from"./app-f83986bb.js";const l={},i=a(`<h1 id="定时任务" tabindex="-1"><a class="header-anchor" href="#定时任务" aria-hidden="true">#</a> 定时任务</h1><h2 id="基于redisson实现定时任务" tabindex="-1"><a class="header-anchor" href="#基于redisson实现定时任务" aria-hidden="true">#</a> 基于redisson实现定时任务</h2><ul><li>job仓库</li><li>调度器</li><li>job执行器</li><li>job注册</li></ul><h3 id="核心" tabindex="-1"><a class="header-anchor" href="#核心" aria-hidden="true">#</a> 核心</h3><blockquote><p>redis中信息</p></blockquote><ul><li>workers</li><li>job</li><li>jobinfo</li><li>taskid</li></ul><blockquote><p>addCronJob</p></blockquote><ul><li>redissonClient.getExecutorService 获取执行器</li><li>executorService.scheduleAsync 定时调度</li><li>execute执行任务</li><li>缓存job的任务id</li></ul><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">public String addCronJob(String jobId, String cron) {</span></span>
+<span class="line"><span style="color:#000000;">    String taskId = redissonClient.getExecutorService(Container.WORKER)</span></span>
+<span class="line"><span style="color:#000000;">            .scheduleAsync(new JobDispatchWrapper(jobId), CronSchedule.of(cron)).getTaskId();</span></span>
+<span class="line"><span style="color:#000000;">    redissonClient.&lt;String, String&gt;getListMultimap(Container.TASK_ID).put(jobId, taskId);</span></span>
+<span class="line"><span style="color:#000000;">    return taskId;</span></span>
+<span class="line"><span style="color:#000000;">}</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p>removeJob</p></blockquote><ul><li>service.cancelTask 取消任务</li></ul><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;"> public void pauseJob(String jobId) {</span></span>
+<span class="line"><span style="color:#000000;">        RListMultimap&lt;String, String&gt; listMap = redissonClient.getListMultimap(Container.TASK_ID);</span></span>
+<span class="line"><span style="color:#000000;">        RScheduledExecutorService service = redissonClient.getExecutorService(Container.WORKER);</span></span>
+<span class="line"><span style="color:#000000;">        Iterator&lt;String&gt; it = listMap.get(jobId).iterator();</span></span>
+<span class="line"><span style="color:#000000;">        while (it.hasNext()) {</span></span>
+<span class="line"><span style="color:#000000;">            String id = it.next();</span></span>
+<span class="line"><span style="color:#000000;">            service.cancelTask(id);</span></span>
+<span class="line"><span style="color:#000000;">            it.remove();</span></span>
+<span class="line"><span style="color:#000000;">        }</span></span>
+<span class="line"><span style="color:#000000;">    }</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p>triggerJob</p></blockquote><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;"> public void triggerJob(String jobId) {</span></span>
+<span class="line"><span style="color:#000000;">        redissonClient.getExecutorService(Container.WORKER).submit(new JobDispatchWrapper(jobId));</span></span>
+<span class="line"><span style="color:#000000;">    }</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><blockquote><p>dispatcher</p></blockquote><div class="language-text line-numbers-mode" data-ext="text"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#000000;">public void dispatch(JobExecuteParam param) {</span></span>
+<span class="line"><span style="color:#000000;"></span></span>
+<span class="line"><span style="color:#000000;">        JobInfo jobInfo = jobRepository.findJobInfoById(param.getJobId());</span></span>
+<span class="line"><span style="color:#000000;">        if (jobInfo == null) {</span></span>
+<span class="line"><span style="color:#000000;">            throw new RuntimeException(String.format(&quot;未查询到任务 %s&quot;, param));</span></span>
+<span class="line"><span style="color:#000000;">        }</span></span>
+<span class="line"><span style="color:#000000;">//        this.checkDispatch(param);</span></span>
+<span class="line"><span style="color:#000000;">        redissonClient.getExecutorService(param.getTopicKey())</span></span>
+<span class="line"><span style="color:#000000;">                .execute(new JobBeanExecuteWrapper(param));</span></span>
+<span class="line"><span style="color:#000000;"></span></span>
+<span class="line"><span style="color:#000000;">    }</span></span>
+<span class="line"><span style="color:#000000;"></span></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,16),o=[i];function r(c,t){return n(),e("div",null,o)}const u=s(l,[["render",r],["__file","定时任务.html.vue"]]);export{u as default};

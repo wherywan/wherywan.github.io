@@ -1,0 +1,17 @@
+import{_ as s}from"./plugin-vue_export-helper-c27b6911.js";import{o as n,c as a,f as l}from"./app-f83986bb.js";const e={},p=l(`<h1 id="jsqlparser" tabindex="-1"><a class="header-anchor" href="#jsqlparser" aria-hidden="true">#</a> JSQLParser</h1><h2 id="引入" tabindex="-1"><a class="header-anchor" href="#引入" aria-hidden="true">#</a> 引入</h2><div class="language-xml line-numbers-mode" data-ext="xml"><pre class="shiki light-plus" style="background-color:#FFFFFF;" tabindex="0"><code><span class="line"><span style="color:#800000;">&lt;repositories&gt;</span></span>
+<span class="line"><span style="color:#000000;">     </span><span style="color:#800000;">&lt;repository&gt;</span></span>
+<span class="line"><span style="color:#000000;">         </span><span style="color:#800000;">&lt;id&gt;</span><span style="color:#000000;">jsqlparser-snapshots</span><span style="color:#800000;">&lt;/id&gt;</span></span>
+<span class="line"><span style="color:#000000;">         </span><span style="color:#800000;">&lt;snapshots&gt;</span></span>
+<span class="line"><span style="color:#000000;">             </span><span style="color:#800000;">&lt;enabled&gt;</span><span style="color:#000000;">true</span><span style="color:#800000;">&lt;/enabled&gt;</span></span>
+<span class="line"><span style="color:#000000;">         </span><span style="color:#800000;">&lt;/snapshots&gt;</span></span>
+<span class="line"><span style="color:#000000;">         </span><span style="color:#800000;">&lt;url&gt;</span><span style="color:#000000;">https://oss.sonatype.org/content/groups/public/</span><span style="color:#800000;">&lt;/url&gt;</span></span>
+<span class="line"><span style="color:#000000;">     </span><span style="color:#800000;">&lt;/repository&gt;</span></span>
+<span class="line"><span style="color:#800000;">&lt;/repositories&gt;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#800000;">&lt;dependency&gt;</span></span>
+<span class="line"><span style="color:#000000;">    </span><span style="color:#800000;">&lt;groupId&gt;</span><span style="color:#000000;">com.github.jsqlparser</span><span style="color:#800000;">&lt;/groupId&gt;</span></span>
+<span class="line"><span style="color:#000000;">    </span><span style="color:#800000;">&lt;artifactId&gt;</span><span style="color:#000000;">jsqlparser</span><span style="color:#800000;">&lt;/artifactId&gt;</span></span>
+<span class="line"><span style="color:#000000;">    </span><span style="color:#800000;">&lt;version&gt;</span><span style="color:#000000;">4.4</span><span style="color:#800000;">&lt;/version&gt;</span></span>
+<span class="line"><span style="color:#800000;">&lt;/dependency&gt;</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,3),t=[p];function o(r,i){return n(),a("div",null,t)}const y=s(e,[["render",o],["__file","jsqlparser.html.vue"]]);export{y as default};
